@@ -16,7 +16,7 @@ setup(
     description='Client for Pushetta API',
     long_description=long_description,
 
-    url='https://github.com/...',
+    url='https://github.com/guglielmino/pushetta-py',
 
     author='Fabrizio Guglielmino',
     author_email='guglielmino@gumino.com',
@@ -43,16 +43,6 @@ setup(
     ],
 
     keywords='pushetta push notifications',
-
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
-
-    install_requires=['peppercorn'],
-
-    # List additional groups of dependencies here (e.g. development dependencies).
-    # You can install these using the following syntax, for example:
-    # $ pip install -e .[dev,test]
-    extras_require = {
-        'dev': ['check-manifest'],
-        'test': ['coverage'],
-    },
+    install_requires=[],
 )
