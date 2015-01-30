@@ -11,7 +11,7 @@ with open(path.join(here, 'DESCRIPTION.rst'), encoding='utf-8') as f:
 setup(
     name='pushetta',
 
-    version='1.0.0',
+    version='1.0.1',
 
     description='Client for Pushetta API',
     long_description=long_description,
