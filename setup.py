@@ -2,6 +2,18 @@ from setuptools import setup, find_packages  # Always prefer setuptools over dis
 from codecs import open  # To use a consistent encoding
 from os import path
 
+
+# Work around mbcs bug in distutils.
+# http://bugs.python.org/issue10945
+import codecs
+try:
+    codecs.lookup('mbcs')
+except LookupError:
+    ascii = codecs.lookup('ascii')
+    func = lambda name, enc=ascii: {True: enc}.get(name=='mbcs')
+    codecs.register(func)
+
+
 here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the relevant file
@@ -11,16 +23,17 @@ with open(path.join(here, 'DESCRIPTION.rst'), encoding='utf-8') as f:
 setup(
     name='pushetta',
 
-    version='1.0.1b1',
+    version='1.0.4',
 
     description='Client for Pushetta API',
     long_description=long_description,
 
     url='https://github.com/guglielmino/pushetta-py',
+    download_url = 'https://github.com/guglielmino/pushetta-py/archive/master.zip',
 
     author='Fabrizio Guglielmino',
     author_email='guglielmino@gumino.com',
-   
+
     license='MIT',
 
     classifiers=[
@@ -31,7 +44,7 @@ setup(
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Libraries',
         'Topic :: System :: Monitoring',
-        
+
 
         # Pick your license as you wish (should match "license" above)
         'License :: OSI Approved :: MIT License',
@@ -43,6 +56,5 @@ setup(
     ],
 
     keywords='pushetta push notifications',
-    packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
-    install_requires=[],
+    packages=['pushetta'],
 )
