@@ -23,7 +23,7 @@ with open(path.join(here, 'DESCRIPTION.rst'), encoding='utf-8') as f:
 setup(
     name='pushetta',
 
-    version='1.0.13',
+    version='1.0.14',
 
     description='Client for Pushetta API',
     long_description=long_description,
@@ -59,5 +59,6 @@ setup(
     packages=find_packages(exclude=['tests*']),
     install_requires=[
         "future",
+        "paho-mqtt",
     ],
 )

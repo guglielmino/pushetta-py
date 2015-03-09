@@ -23,8 +23,11 @@ from __future__ import absolute_import
 # THE SOFTWARE.
 
 import future 
-
+import paho.mqtt.client as mqtt
+import re
 import json
+import uuid
+
 from .exceptions import PushettaException, TokenValidationError, ChannelNotFoundError
 
 try:
@@ -43,9 +46,12 @@ except:
 
 
 class Pushetta(object):
-	
+	iot_url = "iot.pushetta.com"
+	sub_pattern = "/pushetta.com/channels/{0}"
+
 	def __init__(self, apiKey):
 		self._apiKey = apiKey
+		self.mqtt_client = None
 		
 	def pushMessage(self, channel, body, expire=None):
 		try:
@@ -72,3 +78,33 @@ class Pushetta(object):
 		except Exception:
 			import traceback
 			raise PushettaException(traceback.format_exc())
+
+	def subscribe(self, channel, callback):
+		topic = Pushetta.sub_pattern.format(channel)
+
+		if self.mqtt_client is None:
+			self.mqtt_client = mqtt.Client(client_id="pushetta-" + str(uuid.uuid4()))
+			self.mqtt_client.on_message = self.__message_callback
+			self.mqtt_client.on_connect = self.__connect_callback
+			
+			self.mqtt_client.username_pw_set(self._apiKey, password="pushetta")
+		
+			self.mqtt_client.connect(Pushetta.iot_url, 1883, 60)
+
+			self.mqtt_client.user_data_set(topic)
+			self.mqtt_client.loop_start()
+		else:
+			self.mqtt_client.subscribe(topic)
+
+	def unsubscribe(self, channel):
+		topic = Pushetta.sub_pattern.format(channel)
+
+		self.mqtt_client.unsubscribe(topic)
+
+	def __connect_callback(self, client, userdata, flags, rc):
+		print "connect"
+		client.subscribe(userdata)
+
+	def __message_callback(self, client, userdata, message):
+		print("payload " + message.payload)
+
