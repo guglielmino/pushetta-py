@@ -49,6 +49,8 @@ class Pushetta(object):
 	iot_url = "iot.pushetta.com"
 	sub_pattern = "/pushetta.com/channels/{0}"
 
+	message_callback = None
+
 	def __init__(self, apiKey):
 		self._apiKey = apiKey
 		self.mqtt_client = None
@@ -102,9 +104,9 @@ class Pushetta(object):
 		self.mqtt_client.unsubscribe(topic)
 
 	def __connect_callback(self, client, userdata, flags, rc):
-		print "connect"
 		client.subscribe(userdata)
 
 	def __message_callback(self, client, userdata, message):
-		print("payload " + message.payload)
+		if self.message_callback is not None:
+			self.message_callback(message.payload)
 
