@@ -84,6 +84,8 @@ class Pushetta(object):
 	def subscribe(self, channel, callback):
 		topic = Pushetta.sub_pattern.format(channel)
 
+		self.message_callback = callback
+		
 		if self.mqtt_client is None:
 			self.mqtt_client = mqtt.Client(client_id="pushetta-" + str(uuid.uuid4()))
 			self.mqtt_client.on_message = self.__message_callback
