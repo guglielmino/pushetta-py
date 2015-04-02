@@ -110,5 +110,6 @@ class Pushetta(object):
 
 	def __message_callback(self, client, userdata, message):
 		if self.message_callback is not None:
-			self.message_callback(message.payload)
+			notification = {'channel' : message.topic.split('/')[-1], 'message' : message.payload, 'timestamp' : message.timestamp}
+			self.message_callback(notification)
 

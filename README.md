@@ -29,8 +29,9 @@ from pushetta import Pushetta
 
 # Callback called when a message is received
 def my_callback(payload):
-	# payload contains body of notification
-	print "I received " + payload
+	# payload contains body, channel and time of notification
+	print "I received \"" + payload['message'] + '\" from ' + payload['channel'] + ' at ' \
+	+ str(datetime.datetime.fromtimestamp(int(payload['timestamp'])))
 
 # API Key You get after signup on www.pushetta.com
 API_KEY="00112233445566778899aabbccddeeff00112233"
