@@ -21,6 +21,12 @@ Release 1.0.14
 
 Introduced subscription capability to receive notifications.
 
+### 
+Release 1.0.15
+
+Subscribe callback  now brings informations on channel and timestamp in payload.
+
+
 Sample use:
 
 ```python
